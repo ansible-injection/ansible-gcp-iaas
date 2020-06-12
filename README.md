@@ -2,11 +2,13 @@
 
 
 
+
 ## Installation & Basic Configurations
 
-Install **Ansible** on your local or a separate server.
+Install **Ansible** on your local or a separate server. Use inventory file from cmd line! 
 
-- Run `./setup-ansible.sh`
+
+- Run `brew install ansible `, then check `ansible --version`
 
 
 ## to configure for GCP
