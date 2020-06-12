@@ -1,0 +1,80 @@
+- name: Create Compute Instance
+  hosts: localhost
+  gather_facts: no
+
+  vars:
+    project: sandbox-236618
+    region: us-west1
+    zone: us-west1-a
+    auth_kind: serviceaccount
+    service_account_file: ansible-sandbox-236618-5fd34807ceb2.json
+    ip_name: test-ip-01
+    network: default
+    scopes:
+        - https://www.googleapis.com/auth/compute
+
+  tasks:
+   - name: create a boot-disk
+     gcp_compute_disk:
+         name: 'disk-instance'
+         size_gb: 100
+         source_image: 'projects/debian-cloud/global/images/debian-10-buster-v20200521'
+         zone: "{{ zone }}"
+         project: "{{ project }}"
+         auth_kind: "{{ auth_kind }}"
+         service_account_file: "{{ service_account_file }}"
+         scopes: "{{ scopes }}"
+         state: present
+     register: disk
+   - name: create a static-IP address
+     gcp_compute_address:
+         state: present
+         name: "{{ ip_name }}"
+         region: "{{ region }}"
+         project: "{{ project }}"
+         auth_kind: "{{ auth_kind }}"
+         service_account_file: "{{ service_account_file }}"
+         scopes: "{{ scopes }}"
+     register: address
+   - name: create a network
+     gcp_compute_network:
+         name: 'default'
+         project: "{{ project }}"
+         auth_kind: "{{ auth_kind }}"
+         service_account_file: "{{ service_account_file }}"
+         scopes: "{{ scopes }}"
+         state: present
+     register: network
+   - name: create an instance
+     gcp_compute_instance:
+         state: present
+         name: instance-01
+         machine_type: f1-micro
+         disks:
+           - auto_delete: true
+             boot: true
+             source: "{{ disk }}"
+         network_interfaces:
+             - network: "{{ network }}"
+            #  - subnetwork: "default"
+         zone: "{{ zone }}"
+         project: "{{ project }}"
+         auth_kind: "{{ auth_kind }}"
+         service_account_file: "{{ service_account_file }}"
+         scopes: "{{ scopes }}"
+     register: instance
+
+#    - name: Wait for SSH to come up
+#      wait_for: host={{ address.address }} port=22 delay=10 timeout=60
+
+#    - name: Add host to groupname
+    #  add_host: hostname={{ address.address }} groupname=new_instances
+
+
+# - name: Manage new instances
+#   hosts: new_instances
+#   connection: ssh
+#   sudo: True
+#   roles:
+#     - base_configuration
+#     - production_server
