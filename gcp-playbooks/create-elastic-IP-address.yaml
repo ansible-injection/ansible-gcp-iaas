@@ -3,19 +3,22 @@
   gather_facts: no
 
   vars:
-    service_account_file: ansible-sandbox-236618-5fd34807ceb2.json
     project: sandbox-236618
+    region: us-west1
     auth_kind: serviceaccount
+    service_account_file: ansible-sandbox-236618-5fd34807ceb2.json
     scopes:
       - https://www.googleapis.com/auth/compute
+    ip_name: test-ip-01
+
 
   tasks:
 
-   - name: Allocate an IP Address
+   - name: Allocate a Static IP Address
      gcp_compute_address:
          state: present
-         name: 'test-address1'
-         region: 'us-west1'
+         name: "{{ ip_name }}"
+         region: "{{ region }}"
          project: "{{ project }}"
          auth_kind: "{{ auth_kind }}"
          service_account_file: "{{ service_account_file }}"
