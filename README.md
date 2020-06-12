@@ -18,4 +18,5 @@ Install **Ansible** on your local or a separate server. Use inventory file from 
 - Edit `.gcp/env` file, then 
     - Run `./create-service-account.sh` to create a service account and to download private key
     - Run `./activate-service-account.sh` to activate and test service account
+    - or If you have a sa's private key(.json file), just copy to gcp-playbooks folder.
 - Run `ansible-playbook gcp-playbooks/create-elastic-IP-address.yaml`
