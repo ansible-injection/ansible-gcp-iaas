@@ -1,6 +1,6 @@
 # ansible-sandbox
 
-Ansible w/ GCP 
+Ansible w/ GCP & service account
 
 
 ## Installation & Basic Configurations
