@@ -36,15 +36,6 @@
          service_account_file: "{{ service_account_file }}"
          scopes: "{{ scopes }}"
      register: address
-   - name: create a network
-     gcp_compute_network:
-         name: 'default'
-         project: "{{ project }}"
-         auth_kind: "{{ auth_kind }}"
-         service_account_file: "{{ service_account_file }}"
-         scopes: "{{ scopes }}"
-         state: present
-     register: network
    - name: create an instance
      gcp_compute_instance:
          state: present
@@ -55,8 +46,10 @@
              boot: true
              source: "{{ disk }}"
          network_interfaces:
-             - network: "{{ network }}"
-            #  - subnetwork: "default"
+             - access_configs:
+               - name: 'test-ip-01'
+                 nat_ip: "{{ address }}"
+                 type: 'ONE_TO_ONE_NAT'
          zone: "{{ zone }}"
          project: "{{ project }}"
          auth_kind: "{{ auth_kind }}"
@@ -64,11 +57,11 @@
          scopes: "{{ scopes }}"
      register: instance
 
-#    - name: Wait for SSH to come up
-#      wait_for: host={{ address.address }} port=22 delay=10 timeout=60
+   - name: check SSH connection
+     wait_for: host={{ address.address }} port=22 delay=10 timeout=60
 
 #    - name: Add host to groupname
-    #  add_host: hostname={{ address.address }} groupname=new_instances
+#      add_host: hostname={{ address.address }} groupname=new_instances
 
 
 # - name: Manage new instances
