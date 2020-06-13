@@ -1,2 +1,6 @@
-# remove service account private keys :)
-*.json
+#
+vs_code
+.idea
+
+#
+DS_Store
