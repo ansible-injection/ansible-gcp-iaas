@@ -11,7 +11,7 @@ Install **Ansible** on your local or a separate server. Use inventory file from 
 - Run `brew install ansible `, then check `ansible --version`
 
 
-## to configure for GCP
+## Integrating to GCP
 
 - Configure _gcloud cli_ on your local w/ your normal account. This will create `.ssh/google_compute_engine` files
     - `gcloud auth list` to see active account, if you need
