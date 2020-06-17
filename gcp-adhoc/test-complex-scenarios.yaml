@@ -9,7 +9,9 @@
     auth_kind: serviceaccount
     service_account_file: ~/.ssh/ansible-sandbox-236618-5fd34807ceb2.json
     network: default
-    server_count: 1
+    server_count: 
+      - 1
+      - 2
     instance_name: instance-
     scopes:
         - https://www.googleapis.com/auth/compute
@@ -26,6 +28,9 @@
         state: present
       register: address
       with_items: "{{ server_count }}"
+
+      # to access register value when it has more values!
     - name: access address values
-      shell: echo '"{{ address['results'][0].address }}"' > abc
-      with_items: "{{ address }}"
+      # shell: echo '"{{ address['results'][0].address }}"' > abc
+      shell: echo '"{{ item.address }}"' >> output
+      with_items: "{{ address | json_query('results[*]') }}"
