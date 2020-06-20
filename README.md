@@ -2,13 +2,22 @@
 
 Ansible w/ GCP & service account
 
+- [x] Create a static IP on GCP
+- [x] Create 1 instance on GCP
+- [ ] Create N instances on GCP w/
+    - 1 static IP assigned each, 
+    - 1 boot-disk attached
+    - N data-disks attached, and 
+    - N packages-installations
+    - 1 user creation
+
 
 ## Installation & Basic Configurations
 
 Install **Ansible** on your local or a separate server. Use inventory file from cmd line! 
 
 
-- Run `brew install ansible `, then check `ansible --version`
+- Run `brew install ansible`, then check `ansible --version`
 
 
 ## Integrating to GCP
