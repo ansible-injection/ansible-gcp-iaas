@@ -3,20 +3,45 @@
   gather_facts: no
 
   vars:
-    server_count: 
+    server_count:     # array
       - 1
       - 2
+      - 3
+    server_disks:     # dictionary => key:value
+      name: data-1
+      size: 100
+
 
 
   tasks:
 
     # makes list below:
-    # [['alice', 'ali'], ['alice', 'veli'], ['bob', 'ali'], ['bob', 'veli']]
+    # ['alice', 'ali'], ['alice', 'veli'], ['bob', 'ali'], ['bob', 'veli']
     - name: access complex values
       debug: 
-        msg: "{{ item[0] }} with index {{ ansible_loop.index }} = {{ ansible_loop.allitems[0:2] }}"
+        msg: "{{ item[0] }} with index {{ ansible_loop.index }} = {{ ansible_loop.allitems[0:2] }} "
       loop: "{{ ['alice', 'bob'] | product(['ali', 'veli']) | list }}"
       loop_control:
         index_var: my_idx
         extended: yes
+
+    # flattens iner arrays
+    - name: access w/ flatten
+      debug: 
+        msg: "{{ item }}"
+      loop: "{{ ['alice', [1, 2], 'bob', 'jice', 'mice'] | flatten(levels=1) }}"
+
+    # ['alice', 1], ['bob', 2], ['jice', 3]
+    # array's lenght is critical!
+    - name: access w/ zip
+      debug: 
+        msg: "{{ item }}"
+      loop: "{{ ['alice', 'bob', 'jice', 'mice'] | zip(server_count) | list }}"  
+
+    # 
+    - name: access w/ zip
+      debug: 
+        msg: "{{ item.key}} = {{ item.value }}"
+      loop: "{{ server_disks | dict2items}}"  
+       
 
