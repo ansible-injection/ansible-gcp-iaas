@@ -30,7 +30,10 @@
       with_items: "{{ server_count }}"
 
       # to access register value when it has more values!
+      # it is so clear and concise w/ loop:
+      # also, replace shell w/ debug module!
     - name: access address values
-      # shell: echo '"{{ address['results'][0].address }}"' > abc
       shell: echo '"{{ item.address }}"' >> output
-      with_items: "{{ address | json_query('results[*]') }}"
+      loop: "{{ address.results }}"
+
+
