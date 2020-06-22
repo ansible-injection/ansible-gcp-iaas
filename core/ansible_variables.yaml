@@ -1,0 +1,15 @@
+- name: ansible variables
+  hosts: localhost
+  gather_facts: yes
+
+  tasks:
+
+    - name: access ansible variables
+      debug: 
+        msg: "{{ ansible_version }}"
+        # msg: "{{ ansible_version.full }} "
+
+    # gather_facts: yes is critical 
+    - name: access ansible variables
+      debug: 
+        msg: "{{ ansible_facts.hostname }}"

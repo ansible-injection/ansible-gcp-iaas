@@ -1,4 +1,4 @@
-- name: Create Compute Instance
+- name: loop concepts
   hosts: localhost
   gather_facts: no
 
@@ -42,6 +42,6 @@
     - name: access w/ zip
       debug: 
         msg: "{{ item.key}} = {{ item.value }}"
-      loop: "{{ server_disks | dict2items}}"  
+      loop: "{{ server_disks | dict2items }}"  
        
 
