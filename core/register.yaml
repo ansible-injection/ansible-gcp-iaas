@@ -1,0 +1,34 @@
+- name: conditionals-register concepts
+  hosts: localhost
+  gather_facts: no
+
+  tasks:
+
+    # returned as below
+    # "stdout": "Desktop\nDocuments\nDownloads\nLibrary\nMovies\nMusic\nPictures\nPublic\ncoding",
+    #         "stdout_lines": [
+                #     "Desktop",
+                #     "Documents",
+                #     "Downloads",
+                #     "Library",
+                #     "Movies",
+                #     "Music",
+                #     "Pictures",
+                #     "Public",
+                #     "coding"
+                # ]
+    - name: retrieve the files of home
+      command: ls ~
+      register: home
+
+
+    - name: show the files
+      debug: 
+        msg: "{{ home }}"
+      loop: "{{ home.stdout.split() }}"   # convert to list. but w/ space char!
+    #   loop: "{{ home.stdout_lines }}"   # same as above!
+
+    - name: check contents
+      debug:
+        msg: "Directory has {{ home.stdout_lines|length }} file"
+      when: home.stdout_lines|length >= 9
