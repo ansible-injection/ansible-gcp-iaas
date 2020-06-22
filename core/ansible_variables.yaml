@@ -15,9 +15,13 @@
       debug: 
         msg: "{{ ansible_facts.hostname }}"
 
+    - name: access hostname w/o facts
+      debug: 
+        msg: "{{ inventory_hostname }}"
+
     - name: access magic variables
       debug: 
         msg: "{% for host in groups['web'] %}
                {{ host }}
-             {% endfor %}"
+              {% endfor %}"
     
