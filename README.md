@@ -11,6 +11,15 @@ Ansible w/ GCP & service account
     - N packages-installations
     - 1 user creation
 
+## Structure
+
+- inventory
+    - variables.yaml
+    - hosts
+- provision.yaml
+- configuration.yaml
+- roles
+    - ....
 
 ## Installation & Basic Configurations
 
@@ -33,3 +42,8 @@ If you have already a service account's private key (.json file),
     - Just copy it to `~/.ssh/` folder. Then,
     - Check `.yaml` files for json file name!
 - Run `ansible-playbook gcp-playbooks/create-elastic-IP-address.yaml`
+
+
+### Notes about roles
+
+- `ansible-galaxy role init --init-path . ROLE_NAME`
