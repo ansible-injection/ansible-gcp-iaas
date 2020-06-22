@@ -9,7 +9,15 @@
         msg: "{{ ansible_version }}"
         # msg: "{{ ansible_version.full }} "
 
-    # gather_facts: yes is critical 
+    # gather_facts: yes 
+    # for machine related things
     - name: access ansible variables
       debug: 
         msg: "{{ ansible_facts.hostname }}"
+
+    - name: access magic variables
+      debug: 
+        msg: "{% for host in groups['web'] %}
+               {{ host }}
+             {% endfor %}"
+    
