@@ -3,16 +3,10 @@
   gather_facts: no
 
   vars:
-    project: sandbox-236618
-    region: us-west1
-    zone: us-west1-a
-    auth_kind: serviceaccount
-    service_account_file: ~/.ssh/ansible-sandbox-236618-5fd34807ceb2.json
-    ip_name: test-ip-01
-    network: default
-    scopes:
-        - https://www.googleapis.com/auth/compute
     packages: openjdk-11-jre
+  
+  vars_files:
+    - .gcp.env.yaml
 
 
   tasks:
