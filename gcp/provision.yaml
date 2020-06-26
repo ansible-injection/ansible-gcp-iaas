@@ -1,13 +1,9 @@
 - name: Create Compute Instance
   hosts: localhost
   gather_facts: no
-
-  vars:
-    packages: openjdk-11-jre
   
   vars_files:
     - .gcp.env.yaml
-
 
   tasks:
    - name: create a boot-disk
@@ -52,16 +48,7 @@
          service_account_file: "{{ service_account_file }}"
          scopes: "{{ scopes }}"
      register: instance
-
-
-  #  - name: install packages
-  #    apt:
-  #      name: {{ packages }}
-  #      state: latest
-  #      update_cache: yes
-  # 
       
-
 
    - name: check SSH connection
      wait_for: host={{ address.address }} port=22 delay=10 timeout=60

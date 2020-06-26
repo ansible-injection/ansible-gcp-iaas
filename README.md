@@ -1,6 +1,6 @@
 # ansible-sandbox
 
-Ansible w/ GCP & service account.
+Ansible w/ GCP. We need **1 service-account and 1 machine user!**
 
 
 - [x] Create 1 instance on GCP
@@ -19,12 +19,11 @@ Ansible w/ GCP & service account.
 
 ## Structure
 
-
 - .gcp.env.yaml (env. variables)
 - hosts (static inventory)
 - inventory.gcp.yaml (dynamic inventory)
 - provision.yaml (infrastructure provisioning)
-- configuration.yaml (application configuration i.e. Move stages from dev/test/ to prod etc.)
+- configuration.yaml (infrastructure/application configuration i.e. Package installations, Move stages from dev/test/ to prod etc.)
 - deployment.yaml (application deployment i.e blue/green deployment etc.)
 
 
@@ -32,9 +31,7 @@ Ansible w/ GCP & service account.
 
 Install **Ansible** on your local or a separate server. Use inventory file from cmd line! 
 
-
 - Run `brew install ansible`, then check `ansible --version`
-
 
 ## Integrating to GCP
 
@@ -43,6 +40,7 @@ Install **Ansible** on your local or a separate server. Use inventory file from 
 - If you do not want to _create service account manually_, then 
     - Edit `.gcp/env` file, and 
     - Run `./create-service-account.sh` to create a service account and to download private key to `~/.ssh/` !
+
 <hr> 
 
 If you already have a service account's private key (.json file), 
@@ -52,17 +50,20 @@ If you already have a service account's private key (.json file),
 <hr>
 
 Do provisioning,
+- `cd gcp`, then
 - Run `ansible-playbook gcp/provision.yaml`
 
 <hr>
 
-Complete inventory either static or dynamic (possible some bugs),
-- Static
-    - Edit host file, manually. Use network Tags in GCP to draw the arhitecture.
-- Dynamic
+Do configuration, either _static_ or _dynamic_
+- Static inventory
+    - Edit `hosts` file, manually. Use network Tags in GCP to draw the arhitecture.
+    - Run, `ansible-playbook configuration.yaml -i hosts`
+        - This still needs `ansible.cfg` and remote_user values.
+- Dynamic inventory
     - `ansible-inventory -i inventory.gcp.yaml --list --export  --output .tmp ` to see the inventory.
-    - use `-i inventory.gcp.yaml` as parameter to define inventory where necessary
-
+    - Run `ansible-playbook configuration.yaml -i inventory.gcp.yaml` as parameter to define inventory where necessary.
+        - This still needs `ansible.cfg` and remote_user values.
 
 ### Notes about roles
 

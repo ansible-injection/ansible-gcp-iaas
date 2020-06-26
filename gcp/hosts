@@ -3,6 +3,7 @@
 # group w/ alias
 # possible params: ansible_host=, ansible_user=, ansible_ssh_pass=, ansible_connection=ssh/winrm/localhost
 [web]
-web01 ansible_host=ip1
-web02 ansible_host=ip2
+instance-01 ansible_host=34.105.102.31
+
+
 

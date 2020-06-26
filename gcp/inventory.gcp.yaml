@@ -9,9 +9,9 @@ keyed_groups:
   # Create groups from GCE labels
   - prefix: gcp
     key: labels
-hostnames:
-  # List host by name instead of the default public ip
-  - name
+# hostnames:
+#   # List host by name instead of the default public ip
+#   - name
 compose:
   # Set an inventory parameter to use the Public IP address to connect to the host
   # For Private ip use "networkInterfaces[0].networkIP"
