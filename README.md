@@ -5,9 +5,9 @@ Ansible w/ GCP & service account.
 
 - [x] Create 1 instance on GCP
 - [ ] Create N instances on GCP w/
-    - 1 static IP assigned each, 
+    - 1 static IP assigned each
     - 1 boot-disk attached
-    - N data-disks attached, and 
+    - N data-disks attached 
     - N packages-installations
     - 1 user creation
 
@@ -19,14 +19,13 @@ Ansible w/ GCP & service account.
 
 ## Structure
 
-- inventory
-    - variables.yaml
-    - hosts
+
+- .gcp.env.yaml (env. variables)
+- hosts (static inventory)
+- inventory.gcp.yaml (dynamic inventory)
 - provision.yaml (infrastructure provisioning)
 - configuration.yaml (application configuration i.e. Move stages from dev/test/ to prod etc.)
 - deployment.yaml (application deployment i.e blue/green deployment etc.)
-- roles
-    - ....
 
 
 ## Installation & Basic Configurations
@@ -44,12 +43,25 @@ Install **Ansible** on your local or a separate server. Use inventory file from 
 - If you do not want to _create service account manually_, then 
     - Edit `.gcp/env` file, and 
     - Run `./create-service-account.sh` to create a service account and to download private key to `~/.ssh/` !
-<br> 
+<hr> 
 
-If you have already a service account's private key (.json file), 
-    - Just copy it to `~/.ssh/` folder. Then,
-    - Check `.yaml` files for json file name!
-- Run `ansible-playbook gcp-playbooks/create-elastic-IP-address.yaml`
+If you already have a service account's private key (.json file), 
+- Just copy it to `~/.ssh/` folder. Then,
+- Check `.yaml` files for json file name!
+
+<hr>
+
+Do provisioning,
+- Run `ansible-playbook gcp/provision.yaml`
+
+<hr>
+
+Complete inventory either static or dynamic (possible some bugs),
+- Static
+    - Edit host file, manually. Use network Tags in GCP to draw the arhitecture.
+- Dynamic
+    - `ansible-inventory -i inventory.gcp.yaml --list --export  --output .tmp ` to see the inventory.
+    - use `-i inventory.gcp.yaml` as parameter to define inventory where necessary
 
 
 ### Notes about roles

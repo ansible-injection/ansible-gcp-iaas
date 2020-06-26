@@ -6,7 +6,7 @@
     packages: openjdk-11-jre
   
   vars_files:
-    - inventory/.gcp.env.yaml
+    - .gcp.env.yaml
 
 
   tasks:
