@@ -2,7 +2,6 @@
 
 Ansible w/ GCP & service account
 
-- [x] Create a static IP on GCP
 - [x] Create 1 instance on GCP
 - [ ] Create N instances on GCP w/
     - 1 static IP assigned each, 
