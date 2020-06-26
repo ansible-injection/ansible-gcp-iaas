@@ -23,7 +23,7 @@ Ansible w/ GCP. We need **1 service-account and 1 machine user!**
 - hosts (static inventory)
 - inventory.gcp.yaml (dynamic inventory)
 - provision.yaml (infrastructure provisioning)
-- configuration.yaml (infrastructure/application configuration i.e. Package installations, Move stages from dev/test/ to prod etc.)
+- configuration.yaml (infrastructure/application configuration i.e. Package installations, Move stages from dev to prod etc.)
 - deployment.yaml (application deployment i.e blue/green deployment etc.)
 
 
