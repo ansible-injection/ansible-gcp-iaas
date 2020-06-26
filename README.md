@@ -1,6 +1,7 @@
 # ansible-sandbox
 
-Ansible w/ GCP & service account
+Ansible w/ GCP & service account.
+
 
 - [x] Create 1 instance on GCP
 - [ ] Create N instances on GCP w/
@@ -9,6 +10,12 @@ Ansible w/ GCP & service account
     - N data-disks attached, and 
     - N packages-installations
     - 1 user creation
+
+<br>
+
+- For the _continuous delivery_, CI pipeline call Ansible playbooks for deployment. 
+- Some intersections w/ Ansible's deployment and Build tool (gradle) which handles image creation automatically. But Ansible is still valid for build images (in may be some cases), and push it to image repositories etc.
+- If you are using k8s, most parts of the _configuration_ and _deployment_ will be handled by k8s, too!
 
 ## Structure
 
@@ -21,11 +28,6 @@ Ansible w/ GCP & service account
 - roles
     - ....
 
-<br>
-
-- For the _continuous delivery_, CI pipeline call Ansible playbooks for deployment. 
-- Some intersections w. deployment and Build tool (gradle) which handles image creation automatically. But Ansible is still valid for build images (in may be some cases), and push it to image repositories etc.
-- If you are using k8s, most parts of the _configuration_ and _deployment_ will be handled by k8s, too!
 
 ## Installation & Basic Configurations
 
