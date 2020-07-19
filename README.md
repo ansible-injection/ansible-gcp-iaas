@@ -1,11 +1,10 @@
-# ansible-sandbox
+# ansible-gcp-iaas
 
-Ansible core concepts w/ GCP.
+Ansible boilerplate for GCP IaaS scenarios. We need **1 service-account and 1 machine user!**
 
-- [x] core concepts
-- [ ] Create N instances on GCP 
 
-<br>
+- [x] Create 1 instance on GCP: Check `1.0.0-CORE` tag
+- [x] Create N instances on GCP
 
 ## Strategy
 
@@ -28,3 +27,31 @@ Ansible core concepts w/ GCP.
 - tuning.yaml (tuning configurations at linux or application level)
 - deployment.yaml (application deployment i.e blue/green deployment etc.)
 
+
+## Integrating to GCP
+
+- Configure _gcloud cli_ on your local w/ your normal account. This will create `.ssh/google_compute_engine`.
+    - `gcloud auth list` to see active account, if you need
+- If you do not want to _create service account manually_, then 
+    - Edit `.gcp/env` file, and 
+    - Run `./create-service-account.sh` to create a service account and download the private key to `~/.ssh/` !
+
+- If you already have a service account's private key (.json file), 
+    - Just copy it to `~/.ssh/` folder. Then,
+    - Edit `.gcp.env.yaml` file for json file name!
+
+<hr>
+
+- To do provisioning, Run `ansible-playbook gprovision.yaml`
+
+<hr>
+
+Do configuration, either _static_ or _dynamic_
+- Static inventory
+    - Edit `hosts` file, manually. Use network Tags in GCP to draw the arhitecture.
+    - Run, `ansible-playbook configuration.yaml -i hosts`
+        - This still needs `ansible.cfg` and remote_user values.
+- Dynamic inventory
+    - To see the inventory, Run `ansible-inventory -i inventory.gcp.yaml --list --export  --output output `
+    - Run `ansible-playbook configuration.yaml -i inventory.gcp.yaml` as parameter to define inventory where necessary.
+        - This still needs `ansible.cfg` and remote_user values.

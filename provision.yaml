@@ -1,0 +1,85 @@
+- name: Create Compute Instance
+  hosts: localhost
+  gather_facts: no
+  
+  vars_files:
+    - .gcp.env.yaml
+
+  tasks:
+   - name: create a boot-disk
+     gcp_compute_disk:
+         name: 'boot-disk-01'
+         size_gb: 100
+         source_image: 'projects/debian-cloud/global/images/debian-10-buster-v20200521'
+         zone: "{{ zone }}"
+         project: "{{ project }}"
+         auth_kind: "{{ auth_kind }}"
+         service_account_file: "{{ service_account_file }}"
+         scopes: "{{ scopes }}"
+         state: present
+     register: bootdisk
+   - name: create data-disk
+     gcp_compute_disk:
+         name: 'data-disk-01'
+         size_gb: 300
+         zone: "{{ zone }}"
+         project: "{{ project }}"
+         auth_kind: "{{ auth_kind }}"
+         service_account_file: "{{ service_account_file }}"
+         scopes: "{{ scopes }}"
+         state: present
+     register: datadisk
+   - name: create a static-IP address
+     gcp_compute_address:
+         state: present
+         name: "{{ ip_name }}"
+         region: "{{ region }}"
+         project: "{{ project }}"
+         auth_kind: "{{ auth_kind }}"
+         service_account_file: "{{ service_account_file }}"
+         scopes: "{{ scopes }}"
+     register: address
+   - name: create an instance
+     gcp_compute_instance:
+         state: present
+         name: instance-01
+         machine_type: f1-micro
+         disks:
+           - auto_delete: true
+             boot: true
+             source: "{{ bootdisk }}"
+           - auto_delete: true
+             boot: false
+             source: "{{ datadisk }}"
+         network_interfaces:
+             - access_configs:
+               - name: 'test-ip-01'
+                 nat_ip: "{{ address }}"
+                 type: 'ONE_TO_ONE_NAT'
+         zone: "{{ zone }}"
+         project: "{{ project }}"
+         auth_kind: "{{ auth_kind }}"
+         service_account_file: "{{ service_account_file }}"
+         scopes: "{{ scopes }}"
+     register: instance
+
+   - name: Create an ext4 filesystem on /dev/sdb1 and check disk blocks
+     filesystem:
+       fstype: ext4
+       dev: /dev/sdb1
+       opts: -cc     
+
+   - name: check SSH connection
+     wait_for: host={{ address.address }} port=22 delay=10 timeout=60
+
+   - name: Add host to groupname
+     add_host: hostname={{ address.address }} groupname=new_instances
+
+
+# - name: Manage new instances
+#   hosts: new_instances
+#   connection: ssh
+#   sudo: True
+#   roles:
+#     - base_configuration
+#     - production_server

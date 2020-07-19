@@ -1,0 +1,30 @@
+- name: Configure Compute Instance
+  hosts: 
+    - all
+  become: yes
+  gather_facts: no
+
+  vars:
+    packages: 
+        - openjdk-11-jre
+  
+  vars_files:
+    - .gcp.env.yaml
+
+
+  tasks:
+   - name: install packages
+     apt:
+       name: "{{ packages }}"
+       state: latest
+       update_cache: yes
+  
+      
+
+# - name: Manage new instances
+#   hosts: new_instances
+#   connection: ssh
+#   sudo: True
+#   roles:
+#     - base_configuration
+#     - production_server
