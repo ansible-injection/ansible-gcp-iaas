@@ -3,7 +3,6 @@
 Ansible core concepts w/ GCP. We need **1 service-account and 1 machine user!**
 
 - [x] core concepts
-- [ ] Create 1 instance on GCP
 - [ ] Create N instances on GCP 
 
 <br>
