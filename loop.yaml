@@ -11,8 +11,6 @@
       name: data-1
       size: 100
 
-
-
   tasks:
 
     # makes list below:
@@ -26,6 +24,7 @@
         extended: yes
 
     # flattens inner arrays
+    # [1, 2] becomes 1 and 2 
     - name: access w/ flatten
       debug: 
         msg: "{{ item }}"
@@ -39,7 +38,7 @@
       loop: "{{ ['alice', 'bob', 'jice', 'mice'] | zip(server_count) | list }}"  
 
     # 
-    - name: access w/ zip
+    - name: dictionary to items
       debug: 
         msg: "{{ item.key}} = {{ item.value }}"
       loop: "{{ server_disks | dict2items }}"  
