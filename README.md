@@ -1,15 +1,10 @@
 # ansible-sandbox
 
-Ansible w/ GCP. We need **1 service-account and 1 machine user!**
+Ansible core concepts w/ GCP. We need **1 service-account and 1 machine user!**
 
 
 - [x] Create 1 instance on GCP
-- [ ] Create N instances on GCP w/
-    - 1 static IP assigned each
-    - 1 boot-disk attached
-    - N data-disks attached 
-    - N packages-installations
-    - 1 user creation
+- [ ] Create N instances on GCP 
 
 <br>
 
@@ -20,10 +15,10 @@ Ansible w/ GCP. We need **1 service-account and 1 machine user!**
 ## Structure
 
 - .gcp.env.yaml (env. variables)
-- hosts (static inventory)
-- inventory.gcp.yaml (dynamic inventory)
+- hosts (static inventory) or inventory.gcp.yaml (dynamic inventory)
 - provision.yaml (infrastructure provisioning)
 - configuration.yaml (infrastructure/application configuration i.e. Package installations, Move stages from dev to prod etc.)
+- tuning.yaml (tuning configurations at linux or application level)
 - deployment.yaml (application deployment i.e blue/green deployment etc.)
 
 
@@ -49,22 +44,8 @@ If you already have a service account's private key (.json file),
 
 <hr>
 
-Do provisioning,
-- `cd gcp`, then
-- Run `ansible-playbook gcp/provision.yaml`
-
-<hr>
-
 Do configuration, either _static_ or _dynamic_
 - Static inventory
     - Edit `hosts` file, manually. Use network Tags in GCP to draw the arhitecture.
     - Run, `ansible-playbook configuration.yaml -i hosts`
         - This still needs `ansible.cfg` and remote_user values.
-- Dynamic inventory
-    - `ansible-inventory -i inventory.gcp.yaml --list --export  --output .tmp ` to see the inventory.
-    - Run `ansible-playbook configuration.yaml -i inventory.gcp.yaml` as parameter to define inventory where necessary.
-        - This still needs `ansible.cfg` and remote_user values.
-
-### Notes about roles
-
-- `ansible-galaxy role init --init-path . ROLE_NAME`
