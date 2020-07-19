@@ -19,13 +19,13 @@
     # ['alice', 'ali'], ['alice', 'veli'], ['bob', 'ali'], ['bob', 'veli']
     - name: access complex values
       debug: 
-        msg: "{{ item[0] }} with index {{ ansible_loop.index }} = {{ ansible_loop.allitems[0:2] }} "
+        msg: "{{ item }} with index {{ ansible_loop.index }} = {{ ansible_loop.allitems }} "
       loop: "{{ ['alice', 'bob'] | product(['ali', 'veli']) | list }}"
       loop_control:
         index_var: my_idx
         extended: yes
 
-    # flattens iner arrays
+    # flattens inner arrays
     - name: access w/ flatten
       debug: 
         msg: "{{ item }}"
