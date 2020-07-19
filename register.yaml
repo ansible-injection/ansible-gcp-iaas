@@ -6,17 +6,7 @@
 
     # returned as below
     # "stdout": "Desktop\nDocuments\nDownloads\nLibrary\nMovies\nMusic\nPictures\nPublic\ncoding",
-    #         "stdout_lines": [
-                #     "Desktop",
-                #     "Documents",
-                #     "Downloads",
-                #     "Library",
-                #     "Movies",
-                #     "Music",
-                #     "Pictures",
-                #     "Public",
-                #     "coding"
-                # ]
+    # saved in a varible as home
     - name: retrieve the files of home
       command: ls ~
       register: home
@@ -24,7 +14,7 @@
 
     - name: show the files
       debug: 
-        msg: "{{ home }}"
+        msg: "{{ item }}"
       loop: "{{ home.stdout.split() }}"   # convert to list. but w/ space char!
     #   loop: "{{ home.stdout_lines }}"   # same as above!
 
