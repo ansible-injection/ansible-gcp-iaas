@@ -11,15 +11,16 @@
 
     # gather_facts: yes 
     # for machine related things
-    - name: access ansible variables
+    - name: access ansible variables - machine related
       debug: 
         msg: "{{ ansible_facts.hostname }}"
 
-    - name: access hostname w/o facts
+    - name: access hostname while gather_facts:no
       debug: 
         msg: "{{ inventory_hostname }}"
 
-    - name: access magic variables
+    # add ansible-playbook .... -i hosts 
+    - name: access magic variables - from host file
       debug: 
         msg: "{% for host in groups['web'] %}
                {{ host }}
