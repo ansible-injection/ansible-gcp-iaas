@@ -37,12 +37,9 @@ General structure in Ansible projects.
 - Edit `ansible.cfg` and change `remote_user` value
 - Edit `.gcp.env.yaml` file and change `service_account_file` value
 
-
 #### Integrating to GCP
 
 - For provisioning, Run `ansible-playbook provision.yaml`
 - Edit `hosts` file, manually. Use network Tags in GCP to draw the infrastructure architecture.
-- For configuration, Run, `ansible-playbook configuration.yaml -i hosts` that creates `~/.ssh/google_compute_engine` file.
-
-
+- For configuration, Run, `ansible-playbook configuration.yaml -i hosts`.
 
