@@ -32,15 +32,17 @@ General structure in Ansible projects.
 
 #### Preperations for GCP
 
-- Configure **gcloud cli** on your local. This will create `.ssh/google_compute_engine`.
+- Configure **gcloud cli** on your local. This will create `.ssh/google_compute_engine`
 - Create _service account_ manually as ansible and give `roles/admin` role, or Do [automatically](https://github.com/ansible-injection/ansible-gcp-iaas/wiki/Service-Account-Creation-in-GCP)
+- Edit `ansible.cfg` and change `remote_user` value
+- Edit `.gcp.env.yaml` file and change `service_account_file` value
+
 
 #### Integrating to GCP
 
 - For provisioning, Run `ansible-playbook provision.yaml`
-    - Edit `.gcp.env.yaml` file and service_account_file value
 - Edit `hosts` file, manually. Use network Tags in GCP to draw the infrastructure architecture.
 - For configuration, Run, `ansible-playbook configuration.yaml -i hosts` that creates `~/.ssh/google_compute_engine` file.
-    - Edit `ansible.cfg` and change `remote_user` value
+
 
 
