@@ -3,7 +3,7 @@
 Ansible boilerplate for GCP IaaS scenarios. We need **1 service-account and 1 machine user!**
 
 
-- [x] Create 1 instance on GCP: Check `1.0.0-CORE` tag
+- [x] core concepts: Check `1.0.0-CORE` tag
 - [x] Create N instances on GCP
 
 ## Strategy
