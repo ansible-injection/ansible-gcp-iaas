@@ -33,8 +33,7 @@ General structure in Ansible projects.
 ### Preperations for GCP
 
 - Configure **gcloud cli** on your local. This will create `.ssh/google_compute_engine`.
-- Create  _service account_ manually, or  
-    - Edit `.gcp.env` file, and Run `./create-service-account.sh` and **download** the private key to local `~/.ssh/`.
+- Create _service account_ manually as ansible and give `roles/admin` role, or Do [automatically](https://github.com/ansible-injection/ansible-gcp-iaas/wiki/Service-Account-Creation-in-GCP)
 - Edit `.gcp.env.yaml` file for json file name!
 
 ### Integrating to GCP
