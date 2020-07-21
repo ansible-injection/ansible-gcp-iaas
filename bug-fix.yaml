@@ -13,13 +13,11 @@
     - name: Get JAVA_HOME path
       command: /bin/bash -c "echo $(dirname $(dirname $(readlink -f $(which java))))"
       register: java_home
-
     - name: Fix JAVA_HOME path
       lineinfile:
         path: /etc/environment
         regexp: '^JAVA_HOME='
         line: JAVA_HOME="{{java_home.stdout}}"
-
     - name: Fix default PDSH connection type as ssh
       lineinfile:
         path: /etc/environment
