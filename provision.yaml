@@ -63,23 +63,10 @@
          scopes: "{{ scopes }}"
      register: instance
 
-   - name: Create an ext4 filesystem on /dev/sdb1 and check disk blocks
-     filesystem:
-       fstype: ext4
-       dev: /dev/sdb1
-       opts: -cc     
+   
 
    - name: check SSH connection
      wait_for: host={{ address.address }} port=22 delay=10 timeout=60
 
    - name: Add host to groupname
      add_host: hostname={{ address.address }} groupname=new_instances
-
-
-# - name: Manage new instances
-#   hosts: new_instances
-#   connection: ssh
-#   sudo: True
-#   roles:
-#     - base_configuration
-#     - production_server

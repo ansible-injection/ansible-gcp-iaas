@@ -18,6 +18,14 @@
        name: "{{ packages }}"
        state: latest
        update_cache: yes
+
+  # sudo df -h, after mount 
+  # sudo fdisk -l  , before mount
+   - name: Create an ext4 filesystem on /dev/sdb1 and check disk blocks
+     filesystem:
+       fstype: ext4
+       dev: /dev/sdb
+       opts: -cc  
   
       
 
