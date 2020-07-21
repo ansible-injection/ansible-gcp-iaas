@@ -11,28 +11,37 @@
   vars_files:
     - .gcp.env.yaml
 
-
   tasks:
+   - name: Add user, append to groups
+     user:
+       name: hadoop
+       shell: /bin/bash
+       groups: google-sudoers,adm
+       append: yes
    - name: install packages
      apt:
        name: "{{ packages }}"
        state: latest
        update_cache: yes
-
-  # sudo df -h, after mount 
-  # sudo fdisk -l  , before mount
-   - name: Create an ext4 filesystem on /dev/sdb1 and check disk blocks
+   - name: Create an ext4 filesystem on /dev/sdb and check disk blocks
      filesystem:
        fstype: ext4
        dev: /dev/sdb
-       opts: -cc  
-  
-      
+   - name: Mount and bind /dev/sdb volume
+     mount:
+       path: /data
+       src: /dev/sdb
+       state: mounted
+       fstype: ext4 
+   - name: Change ownership and group
+     file:
+       path: /data
+       state: directory
+       recurse: yes
+       owner: hadoop
+       group: hadoop
 
-# - name: Manage new instances
-#   hosts: new_instances
-#   connection: ssh
-#   sudo: True
-#   roles:
-#     - base_configuration
-#     - production_server
+- name: Load Bug-Fixes
+  include: bug-fix.yaml
+
+  
