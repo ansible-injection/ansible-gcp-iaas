@@ -7,7 +7,11 @@ Ansible boilerplate for GCP IaaS scenarios. We need **1 service-account** and **
 Generally, you need to do _provisioning_ as **localhost** using _ansible service account_. Creation service account manually is easier than using cli. Alsot, You should choose _static host_ management. Then, you can _configure_ machines using your _own GCP account_. Because Configuration requires ssh.
 
 - [x] core concepts: Check `1.0.0-CORE` tag
-- [x] Create N instances on GCP
+- [x] Create 1 instance on GCP: Check `2.0.0-GCP-CORE` tag
+    - boot-disk, data-disk, 
+    - static IP, 
+    - user creation, ssh-key generation
+    - package installations
 
 ## Strategy
 
