@@ -41,6 +41,10 @@
        owner: hadoop
        group: hadoop
 
+   - name: ssh-key generation
+   - name: ssh-key copy into authorized-keys
+   - name: configurations for .....
+   
 - name: Load Bug-Fixes
   include: bug-fix.yaml
 
