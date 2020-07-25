@@ -29,6 +29,17 @@
          scopes: "{{ scopes }}"
          state: present
      register: datadisk
+   - name: create log-disk
+     gcp_compute_disk:
+         name: 'log-disk-01'
+         size_gb: 300
+         zone: "{{ zone }}"
+         project: "{{ project }}"
+         auth_kind: "{{ auth_kind }}"
+         service_account_file: "{{ service_account_file }}"
+         scopes: "{{ scopes }}"
+         state: present
+     register: logdisk     
    - name: create a static-IP address
      gcp_compute_address:
          state: present
@@ -51,6 +62,9 @@
            - auto_delete: true
              boot: false
              source: "{{ datadisk }}"
+           - auto_delete: true
+             boot: false
+             source: "{{ logdisk }}"             
          network_interfaces:
              - access_configs:
                - name: 'test-ip-01'

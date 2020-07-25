@@ -1,4 +1,4 @@
-- name: Configure Compute Instance
+- name: Fundamental Compute Instance Configurations
   hosts: 
     - all
   become: yes
@@ -6,44 +6,59 @@
 
   vars:
     packages: 
-        - openjdk-11-jre
+        - openjdk-8-jre
+        - openjdk-8-jdk-headless
+        - pdsh
+    additional_disks:
+        data-disk: 
+            path: "/data"
+            device: "/dev/sdb"
+            fstype: "ext4"
+            owner: "hadoop"
+        log-disk: 
+            path: "/logs"
+            device: "/dev/sdc"
+            fstype: "ext4"
+            owner: "hadoop"
+
   
   vars_files:
     - .gcp.env.yaml
 
   tasks:
-   - name: Add user, append to groups
+   - name: Add machine user as sudoers
      user:
        name: hadoop
        shell: /bin/bash
        groups: google-sudoers,adm
        append: yes
-   - name: install packages
+   - name: Install packages
      apt:
        name: "{{ packages }}"
        state: latest
        update_cache: yes
-   - name: Create an ext4 filesystem on /dev/sdb and check disk blocks
+   - name: Format additional-disks' filesystem
      filesystem:
-       fstype: ext4
-       dev: /dev/sdb
-   - name: Mount and bind /dev/sdb volume
+       fstype: "{{ item.value.fstype }}"
+       dev: "{{ item.value.device }}"
+     with_dict: "{{ additional_disks }}"
+   - name: Mount and bind additional-disks
      mount:
-       path: /data
-       src: /dev/sdb
+       path: "{{ item.value.path }}"
+       src: "{{ item.value.device }}"
        state: mounted
-       fstype: ext4 
-   - name: Change ownership and group
+       fstype: "{{ item.value.fstype }}"
+     with_dict: "{{ additional_disks }}" 
+   - name: Change additional-disks' ownership
      file:
-       path: /data
+       path: "{{ item.value.path }}"
        state: directory
        recurse: yes
-       owner: hadoop
-       group: hadoop
+       owner: "{{ item.value.owner }}"
+       group: "{{ item.value.group }}"
+     with_dict: "{{ additional_disks }}"  
 
-   - name: ssh-key generation
-   - name: ssh-key copy into authorized-keys
-   - name: configurations for .....
+
    
 - name: Load Bug-Fixes
   include: bug-fix.yaml
