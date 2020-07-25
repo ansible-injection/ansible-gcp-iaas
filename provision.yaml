@@ -10,7 +10,7 @@
      gcp_compute_disk:
          name: 'boot-disk-01'
          size_gb: 100
-         source_image: 'projects/debian-cloud/global/images/debian-10-buster-v20200521'
+         source_image: 'projects/ubuntu-os-cloud/global/images/family/ubuntu-2004-lts'
          zone: "{{ zone }}"
          project: "{{ project }}"
          auth_kind: "{{ auth_kind }}"
@@ -77,7 +77,7 @@
          scopes: "{{ scopes }}"
      register: instance
 
-   
 
+# tests
    - name: check SSH connection
      wait_for: host={{ address.address }} port=22 delay=10 timeout=60
