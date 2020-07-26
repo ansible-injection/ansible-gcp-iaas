@@ -1,83 +1,79 @@
-- name: Create Compute Instance
+- name: Create Compute Instance(s)
   hosts: localhost
   gather_facts: no
-  
-  vars_files:
-    - .gcp.env.yaml
 
+  vars:
+    general:
+        project: sandbox-236618
+        region: europe-west4
+        auth_kind: serviceaccount
+        service_account_file: ~/.ssh/ansible-sandbox-236618-5fd34807ceb2.json
+    scopes:
+        - https://www.googleapis.com/auth/compute
+          
   tasks:
-   - name: create a boot-disk
-     gcp_compute_disk:
-         name: 'boot-disk-01'
-         size_gb: 100
-         source_image: 'projects/ubuntu-os-cloud/global/images/family/ubuntu-2004-lts'
-         zone: "{{ zone }}"
-         project: "{{ project }}"
-         auth_kind: "{{ auth_kind }}"
-         service_account_file: "{{ service_account_file }}"
-         scopes: "{{ scopes }}"
-         state: present
-     register: bootdisk
-   - name: create data-disk
-     gcp_compute_disk:
-         name: 'data-disk-01'
-         size_gb: 300
-         zone: "{{ zone }}"
-         project: "{{ project }}"
-         auth_kind: "{{ auth_kind }}"
-         service_account_file: "{{ service_account_file }}"
-         scopes: "{{ scopes }}"
-         state: present
-     register: datadisk
-   - name: create log-disk
-     gcp_compute_disk:
-         name: 'log-disk-01'
-         size_gb: 300
-         zone: "{{ zone }}"
-         project: "{{ project }}"
-         auth_kind: "{{ auth_kind }}"
-         service_account_file: "{{ service_account_file }}"
-         scopes: "{{ scopes }}"
-         state: present
-     register: logdisk     
-   - name: create a static-IP address
-     gcp_compute_address:
-         state: present
-         name: "{{ ip_name }}"
-         region: "{{ region }}"
-         project: "{{ project }}"
-         auth_kind: "{{ auth_kind }}"
-         service_account_file: "{{ service_account_file }}"
-         scopes: "{{ scopes }}"
-     register: address
-   - name: create an instance
-     gcp_compute_instance:
-         state: present
-         name: instance-01
-         machine_type: f1-micro
-         disks:
-           - auto_delete: true
-             boot: true
-             source: "{{ bootdisk }}"
-           - auto_delete: true
-             boot: false
-             source: "{{ datadisk }}"
-           - auto_delete: true
-             boot: false
-             source: "{{ logdisk }}"             
-         network_interfaces:
-             - access_configs:
-               - name: 'test-ip-01'
-                 nat_ip: "{{ address }}"
-                 type: 'ONE_TO_ONE_NAT'
-         zone: "{{ zone }}"
-         project: "{{ project }}"
-         auth_kind: "{{ auth_kind }}"
-         service_account_file: "{{ service_account_file }}"
-         scopes: "{{ scopes }}"
-     register: instance
+
+    - include: provision-tasks.yaml
+      vars:
+        nodes:
+          - name: master-node        #node-name such as name-node secondary-name-node data-node1 data-node2
+            zone: europe-west4-a     #distribute other nodes
+            machine_type: f1-micro
+            ips:
+                - nic: 
+                    name: "ip-01"
+            tags: hadoop             #network tags used by FW rules! Use the tool name
+            labels:                  #filtering,
+                type: hdfs
+                name: master
+            boot_disk:
+                - disk:
+                    name: "boot-disk-01"
+                    size: 100
+                    image: "projects/ubuntu-os-cloud/global/images/family/ubuntu-2004-lts"
+                    auto_delete: true
+                    boot: true
+            additional_disks:
+                - disk: 
+                    name: "data-disk-01"
+                    size: 300
+                    auto_delete: true     #false is better for production usecases
+                    boot: false
+                - disk: 
+                    name: "log-disk-01"
+                    size: 300
+                    auto_delete: true     #false is better for production usecases
+                    boot: false
 
 
-# tests
-   - name: check SSH connection
-     wait_for: host={{ address.address }} port=22 delay=10 timeout=60
+    - include: provision-tasks.yaml
+      vars:
+        nodes:
+          - name: worker-node        #node-name such as name-node secondary-name-node data-node1 data-node2
+            zone: europe-west4-a     #distribute other nodes
+            machine_type: f1-micro
+            ips: 
+                - nic: 
+                    name: "w-ip-01"
+            tags: hadoop             #network tags used by FW rules! Use the tool name
+            labels:                  #filtering,
+                type: hdfs
+                name: worker
+            boot_disk:
+                - disk:
+                    name: "w-boot-disk-01"
+                    size: 100
+                    image: "projects/ubuntu-os-cloud/global/images/family/ubuntu-2004-lts"
+                    auto_delete: true
+                    boot: true              
+            additional_disks:
+                - disk: 
+                    name: "w-data-disk-01"
+                    size: 350
+                    auto_delete: true     #false is better for production usecases
+                    boot: false
+                - disk: 
+                    name: "w-log-disk-01"
+                    size: 370
+                    auto_delete: true     #false is better for production usecases
+                    boot: false
