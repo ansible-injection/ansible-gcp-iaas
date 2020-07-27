@@ -58,6 +58,7 @@
        name: "{{ packages }}"
        state: latest
        update_cache: yes
+   
    - name: additional-disks - Format filesystem
      filesystem:
        fstype: "{{ item.value.fstype }}"
