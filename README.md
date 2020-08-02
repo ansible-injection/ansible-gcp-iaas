@@ -17,6 +17,7 @@ If you are using *role based project structure*
 ```
 - ansible.cfg
 - hosts
+- requirements.yaml
 - provision.yaml (which runs roles w/ your valid vars)
 - inside ~/.ansible folder
     - role1
