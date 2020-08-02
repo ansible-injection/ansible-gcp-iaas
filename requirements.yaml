@@ -1,0 +1,5 @@
+# from galaxy
+- src: tansudasli.gcp_instances
+
+# from GitHub
+# - src: https://github.com/bennojoy/nginx

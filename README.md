@@ -1,49 +1,41 @@
-# ansible-gcp-iaas
+# test-gcp-iaas-roles
 
-Ansible boilerplate for GCP IaaS scenarios. We need **1 service-account** and **1 machine user!**
+Test boilerplate for Ansible role(s) for GCP IaaS scenarios. For more [detail](https://github.com/ansible-injection/test-gcp-iaas-roles/wiki)
 
-<br>
-
-Generally, you need to do _provisioning_ as **localhost** using _ansible service account_. Creation service account manually is easier than using cli. Alsot, You should choose _static host_ management. Then, you can _configure_ machines using your _own GCP account_. Because Configuration requires ssh.
-
-- [x] core concepts: Check `1.0.0-CORE` tag
-- [x] Create 1 instance on GCP: Check `2.0.0-GCP-CORE` tag
-    - boot-disk, data-disk, 
-    - static IP, 
-    - user creation, ssh-key generation
-    - package installations
-
-## Strategy
-
-- For the _continuous delivery_, CI pipeline calls Ansible playbooks for deployment. 
-- Some intersections w/ Ansible's deployment and Build tool (gradle) which handles docker image creation automatically. But Ansible is still valid for build images (in may be some cases), and push it to image repositories etc.
-- If you are using k8s, most parts of the _configuration_ and _deployment_ will be handled by k8s, too!
+## Requirements
+ 
+- _ansible_ client
+- _ansible.cfg_ file and enable _gcp_compute_ plugin
+- service account and gcp account
 
 ### Structure
 
-General structure in Ansible projects.
+[Playbook based project structure](https://github.com/ansible-injection/test-gcp-iaas-roles/wiki/Ansible-playbook-project-structure) in Ansible projects.
 
-- .gcp.env.yaml (env. variables)
-- hosts (static inventory) or inventory.gcp.yaml (dynamic inventory). Click for [more](https://github.com/ansible-injection/ansible-gcp-iaas/wiki/Ansible-Inventory-Management-in-GCP)
-- provision.yaml (infrastructure provisioning)
-- configuration.yaml (infrastructure/application configuration i.e. Package installations, Move stages from dev to prod etc.)
-- tuning.yaml (tuning configurations at linux or application level)
-- deployment.yaml (application deployment i.e blue/green deployment etc.)
+If you are using *role based project structure*
+
+```
+- ansible.cfg
+- hosts
+- provision.yaml (which runs roles w/ your valid vars)
+
+```
 
 ## Installation
 
 - Install **Ansible** cli on your local w/ `brew install ansible`, then check `ansible --version`
 
-#### Preperations for GCP
+#### Preperations
 
 - Configure **gcloud cli** on your local. This will create `.ssh/google_compute_engine`
 - Create _service account_ manually as ansible and give `roles/admin` role, or Do [automatically](https://github.com/ansible-injection/ansible-gcp-iaas/wiki/Service-Account-Creation-in-GCP)
 - Edit `ansible.cfg` and change `remote_user` value
-- Edit `.gcp.env.yaml` file and change `service_account_file` value
+- Edit `provision.yaml` file and change `vars.general.project` value
+- Run `ansible-galaxy install -r requirements.yaml` to get related roles
 
 #### Integrating to GCP
 
 - For provisioning, Run `ansible-playbook provision.yaml`
-- Edit `hosts` file, manually. Use network Tags in GCP to draw the infrastructure architecture.
+- Edit `hosts` file, manually. Align network Tags in GCP and host groupping.
 - For configuration, Run, `ansible-playbook configuration.yaml -i hosts`.
 
