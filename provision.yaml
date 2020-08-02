@@ -2,78 +2,50 @@
   hosts: localhost
   gather_facts: no
 
-  vars:
-    general:
-        project: sandbox-236618
-        region: europe-west4
-        auth_kind: serviceaccount
-        service_account_file: ~/.ssh/ansible-sandbox-236618-5fd34807ceb2.json
-    scopes:
-        - https://www.googleapis.com/auth/compute
+#   vars:
+#     general:
+#         project: sandbox-236618
+#         region: europe-west4
+#         auth_kind: serviceaccount
+#         service_account_file: ~/.ssh/ansible.json
+#     scopes:
+#         - https://www.googleapis.com/auth/compute
           
   tasks:
 
-    - include: provision-tasks.yaml
-      vars:
-        nodes:
-          - name: master-node        #node-name such as name-node secondary-name-node data-node1 data-node2
-            zone: europe-west4-a     #distribute other nodes
-            machine_type: f1-micro
-            ips:
-                - nic: 
-                    name: "ip-01"
-            tags: hadoop             #network tags used by FW rules! Use the tool name
-            labels:                  #filtering,
-                type: hdfs
-                name: master
-            boot_disk:
-                - disk:
-                    name: "boot-disk-01"
-                    size: 100
-                    image: "projects/ubuntu-os-cloud/global/images/family/ubuntu-2004-lts"
-                    auto_delete: true
-                    boot: true
-            additional_disks:
-                - disk: 
-                    name: "data-disk-01"
-                    size: 300
-                    auto_delete: true     #false is better for production usecases
-                    boot: false
-                - disk: 
-                    name: "log-disk-01"
-                    size: 300
-                    auto_delete: true     #false is better for production usecases
-                    boot: false
+  roles:
+    #run w/ default var values
+    - role: tansudasli.gcp_instances  
+
+    #   vars:
+    #     nodes:
+    #       - name: master-node        #node-name such as name-node secondary-name-node data-node1 data-node2
+    #         zone: europe-west4-a     #distribute other nodes
+    #         machine_type: f1-micro
+    #         ips:
+    #             - nic: 
+    #                 name: "ip-01"
+    #         tags: hadoop             #network tags used by FW rules! Use the tool name
+    #         labels:                  #filtering,
+    #             type: hdfs
+    #             name: master
+    #         boot_disk:
+    #             - disk:
+    #                 name: "boot-disk-01"
+    #                 size: 100
+    #                 image: "projects/ubuntu-os-cloud/global/images/family/ubuntu-2004-lts"
+    #                 auto_delete: true
+    #                 boot: true
+    #         additional_disks:
+    #             - disk: 
+    #                 name: "data-disk-01"
+    #                 size: 300
+    #                 auto_delete: true     #false is better for production usecases
+    #                 boot: false
+    #             - disk: 
+    #                 name: "log-disk-01"
+    #                 size: 300
+    #                 auto_delete: true     #false is better for production usecases
+    #                 boot: false
 
 
-    - include: provision-tasks.yaml
-      vars:
-        nodes:
-          - name: worker-node        #node-name such as name-node secondary-name-node data-node1 data-node2
-            zone: europe-west4-a     #distribute other nodes
-            machine_type: f1-micro
-            ips: 
-                - nic: 
-                    name: "w-ip-01"
-            tags: hadoop             #network tags used by FW rules! Use the tool name
-            labels:                  #filtering,
-                type: hdfs
-                name: worker
-            boot_disk:
-                - disk:
-                    name: "w-boot-disk-01"
-                    size: 100
-                    image: "projects/ubuntu-os-cloud/global/images/family/ubuntu-2004-lts"
-                    auto_delete: true
-                    boot: true              
-            additional_disks:
-                - disk: 
-                    name: "w-data-disk-01"
-                    size: 350
-                    auto_delete: true     #false is better for production usecases
-                    boot: false
-                - disk: 
-                    name: "w-log-disk-01"
-                    size: 370
-                    auto_delete: true     #false is better for production usecases
-                    boot: false
