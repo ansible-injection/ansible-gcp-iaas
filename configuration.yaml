@@ -5,6 +5,14 @@
   gather_facts: no
 
   vars:
+    general:
+      project: sandbox-236618
+      region: europe-west4
+      auth_kind: serviceaccount
+      service_account_file: ~/.ssh/ansible.json
+    scopes:
+      - https://www.googleapis.com/auth/compute
+
     packages: 
         - openjdk-8-jre
         - openjdk-8-jdk-headless
@@ -26,9 +34,6 @@
             fstype: "ext4"
             owner: "hadoop"
 
-
-  vars_files:
-    - .gcp.env.yaml
 
   tasks:
    - name: user - Add as sudoers, generate ssh-key
