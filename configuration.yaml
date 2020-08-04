@@ -19,9 +19,9 @@
     #     - pdsh
 
     # user: 
-    #     hadoop:                               #item.key
-    #         type: "rsa"                       #item.value.type
-    #         file: "/home/hadoop/.ssh/id_rsa"  #item.value.file
+    #     hadoop:                               #username: Such as hadoop, elasticsearch etc.. Apply to other 
+    #         type: "rsa"                       #
+    #         file: "/home/hadoop/.ssh/id_rsa"  #username!
     #         groups: "google-sudoers,adm"
 
     # additional_disks:
@@ -29,12 +29,12 @@
     #         path: "/data"
     #         device: "/dev/sdb"
     #         fstype: "ext4"
-    #         owner: "hadoop"
+    #         owner: "hadoop"                   #username!
     #     log-disk: 
     #         path: "/logs"
     #         device: "/dev/sdc"
     #         fstype: "ext4"
-    #         owner: "hadoop"
+    #         owner: "hadoop"                   #username!
 
 
   # tasks:
