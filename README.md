@@ -14,15 +14,20 @@ Test boilerplate for Ansible role(s) for GCP IaaS scenarios. For more [detail](h
 
 If you are using *role based project structure*
 
+your project folder
 ```
 - ansible.cfg
 - hosts
-- requirements.yaml
-- provision.yaml (which runs roles w/ your valid vars)
-- inside ~/.ansible folder
-    - role1
-    - role2
-    - ..
+- requirements.yaml        Installs roles under ~/.ansible
+- provision.yaml           to run roles w/ your valid vars
+- configuration.yaml       to run roles w/ your valid vars
+```
+
+inside ~/.ansible folder
+```
+- role1
+- role2
+- ..
 ```
 
 ## Installation
@@ -37,9 +42,9 @@ If you are using *role based project structure*
 - Edit `provision.yaml` file and change `vars.general.project` value
 - Run `ansible-galaxy install -r requirements.yaml` to get related roles
 
-#### Integrating to GCP
+#### How To Run
 
 - For provisioning, Run `ansible-playbook provision.yaml`
-- Edit `hosts` file, manually. Align network Tags in GCP and host groupping.
+- Edit `hosts` file, manually. Align network Tags in GCP and host grouping.
 - For configuration, Run, `ansible-playbook configuration.yaml -i hosts`.
 
