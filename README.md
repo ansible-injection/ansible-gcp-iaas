@@ -40,11 +40,10 @@ inside ~/.ansible folder
 - Create _service account_ manually as ansible and give `roles/admin` role, or Do [automatically](https://github.com/ansible-injection/ansible-gcp-iaas/wiki/Service-Account-Creation-in-GCP)
 - Edit `ansible.cfg` and change `remote_user` value
 - Edit `provision.yaml` file and change `vars.general.project` value
-- Run `ansible-galaxy install -r requirements.yaml` to get related roles
 
 #### How To Run
 
+- Run `ansible-galaxy install -r requirements.yaml --force` to get related roles
 - For provisioning, Run `ansible-playbook provision.yaml`
 - Edit `hosts` file, manually. Align network Tags in GCP and host grouping.
 - For configuration, Run, `ansible-playbook configuration.yaml -i hosts`.
-
