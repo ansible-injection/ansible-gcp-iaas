@@ -4,7 +4,7 @@
 # Update IPs
 # possible params: ansible_host=, ansible_user=, ansible_ssh_pass=, ansible_connection=ssh/winrm/localhost
 [web]
-standalone-node ansible_host=34.90.161.251
+standalone-node ansible_host=35.204.86.72
 
 
 

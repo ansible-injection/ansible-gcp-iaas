@@ -1,6 +1,7 @@
 # from galaxy
 - src: tansudasli.gcp_instances
-- src: tansudasli.gcp_basic_configurations 
+- src: tansudasli.gcp_basic_configurations
+- src: tansudasli.gcp_basic_installations 
 
 # from GitHub
 # - src: https://github.com/bennojoy/nginx
